@@ -1,0 +1,101 @@
+# The purpose of this script is to optimize the deep learning model,
+# so that it achieves around or greater than 90% kfold accuracy on the
+# R dataset. The following steps are performed:
+
+# 1) Initialize model hyperparameters and training settings
+# 2) Run model on train portion using K-fold cross validation
+# 3) Assess K-fold accuracy
+#   a) if desired levels are reached train model on entire training dataset
+#   b) otherwise, do one of the following to increase accuracy:
+      #  1) tune hyperparameters
+      #  2) use a different model architecture
+      #  3) review markings
+      #  4) increase dataset size 
+  
+# set to true for k-fold cross validation, else false
+kfold_bool: False
+
+# number of folds to run if kfold_bool is true, else ignore
+k: 5
+
+# set to True if gpu availabled
+gpu: False
+
+# gpu identifier 
+gpu_number: '0' 
+
+# path to reference data (X)
+R_data_path: 'prepared_data/R_dataset_X_train.npy'
+
+# path to training labels (y)
+R_labels_path: 'prepared_data/R_dataset_y_train_A.npy'
+
+# folder to save output
+save_path: 'saved_models/final_models/'
+
+# specify folder to save outputs for given run
+run_name: 'run_1'
+
+# input_size (should be equal to window_length)
+size: 100 
+
+# number of features (2 if using broad-band and frequency of interest signal)
+dims: 2 
+
+detrend_bool: True # whether or not to detrend raw signal in each iEEG segment 
+
+# number of output units for the model
+num_outputs: 1
+
+# loss function used to assess error between model predictions and target output
+loss_func: 'binary_crossentropy'
+
+# final layer nonlinearity should be sigmoid if output_units is 1, else softmax
+nonlin_out: 'sigmoid' 
+
+# ratio of inconsistent to consistent examples fed during training
+class_ratio: 1
+
+# -------------------- hypyerparameters ----------------------
+dropout: .1 # percentage of units to randomly zero out every iteration 
+learning_rate: 1.e-4
+batch_size: 1.e+5 # set to arbitrarily large number, so that batch GD is performed 
+kfold_epochs: 20000 # max number of epochs to run 
+patience: 1000 # if val loss doesn't improve after this many epochs, terminate training 
+dense_num: 10 # number of units for first dense layer 
+optim: 'adam' # optimizer 
+filters: [24, 48] # number of filters for first and second conv layer
+kernel_size: [20, 10] # filter size in temporal dimension for first and second conv layer 
+nonlin: 'selu' # nonlinearity used for conv blocks and first dense 
+# -------------------------------------------------------------
+
+# Everything below here only should be set after desired kfold accuracy is reached
+
+# number of models to train after kfold step is done
+N: 5
+
+# run examine_kfold.ipynb to get this value
+epochs: 2766
+
+# path to R baseline data and labels
+R_baseline_data_path: 'prepared_data/R_dataset_X_baseline.npy'
+R_baseline_labels_path: 'prepared_data/R_dataset_y_baseline_A.npy'
+
+# path to testing data
+# we'll use a list here, in case users want to pass multiple test datasets
+T_data_path: ['prepared_data/T_dataset_X.npy']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

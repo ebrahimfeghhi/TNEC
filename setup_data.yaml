@@ -1,0 +1,80 @@
+# The purpose of this script is to get the data in the proper 
+# format to feed into a deep learning model.
+
+# For a convolutional neural network, this requires events (X) of shape 
+# (num_events X num_timesteps X num_features), where:
+
+# num_events: the number of consistent + inconsistent events
+# num_timesteps: window length
+# num_features: in the current settings this is always 2, one broadband signal and one 
+# frequency band of interest
+
+# The labels (y) for these events must be of shape (num_events), with the following elements:
+
+# Label 0: Inconsistent event
+# Label 1: Consistent event
+
+# NOTE, there are two ways to run this script. 
+
+# Method 1) If you have transient events pre-marked, you can specify the path where
+# they are loaded. See below to make sure transient event markings are properly
+# formatted. In this case, both X and y are saved to the specified locations.
+
+# Method 2) If you do not have transient events premarked, this script will only save X. This is 
+# because without transients, it is not possible to create the labels. It is up to the user
+# in this case to create y, which is a binary vector of length num_events. y should be saved
+# in the same location and with the same name as X, except with the postfix _y (instead of _X).
+# Labels (y) should be created by visualizing each candidate event and assigning a binary marking
+# indicating consistency. To faciliate with visualization, event timestamps are also saved
+# with postfix _timestamps.
+
+
+# specify file path for R and T datasets
+# data should be a single vector that can be loaded into a numpy array 
+data_path_R: 'example_data/data/R_epoch.npy' 
+data_path_T: 'example_data/data/T_epoch.npy'
+
+# sampling frequency (Hz)
+sf: 1000 
+
+# length of each window that is fed into the model as input (ms)
+window_length: 100 
+
+# length of overlap between consecutive windows (ms)
+window_overlap: 75
+
+# apply broadband filter at the following frequencies to remove noise (Hz)
+broad_freq: [1,250] 
+
+# frequency band of interest (Hz)
+freq_band: [75,125] 
+
+# broadband frequency to apply before computing rel_pow
+rel_pow_band: [20, 250]
+
+# threshold for acceptance as a candidate (0-1, higher is more stringent)
+candidate_threshold: .65
+
+# duration of overlap required between TNE marking and candidate for candidate to be considered as a TNE
+overlap_criteria: .5
+
+# set to True if Transients have already been marked, otherwise set to False
+TNEs_marked: False
+
+# list of lists with start stop times (ms), e.g. [[start, stop], ...]
+# example for 3 marked TNEs [[10,110], [900,1060], [800,870]]
+# if no TNEs marked, set to empty string
+TNE_indices_path_R: ''
+TNE_indices_path_T: ''
+
+# fraction of data to use for training in R
+train_ratio: .8
+
+# path for saved dataset
+# events will be saved with postfix _X, and labels with postfix _y
+# event timestamps are saved with postfix _timestamps as a list of lists
+# with each sublist containing a start and stop time
+save_path_R: 'prepared_data/R_dataset'
+save_path_T: 'prepared_data/T_dataset'
+
+
