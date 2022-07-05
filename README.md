@@ -6,6 +6,7 @@ please email efeghhi@gmail.com.
 Run pip install -r requirements.txt to install the necessary packages. 
 
 ### Step 2: Modify setup_data.yaml and run corresponding .py file 
+Refer to the comments in the yaml script to fill it out!
 
 ### Step 3: Modify compute_consistency_scores.yaml and run corresponding .py file. 
 This step requires two parts. 
