@@ -46,9 +46,9 @@ marker_T.save_events(TNE_indices_path_T, save_path_T, overlap_criteria)
 
 
 automated_reviewers_paper(marker_R.quantiles, marker_R.candidates, .9, 
-                        'prepared_data/R_dataset_y', .8, False)
+                        'prepared_data/R_dataset_y', .8)
 automated_reviewers_paper(marker_T.quantiles, marker_T.candidates, .9, 
-                    'prepared_data/T_dataset_y', 1, True)
+                    'prepared_data/T_dataset_y', 1)
 
 
 
